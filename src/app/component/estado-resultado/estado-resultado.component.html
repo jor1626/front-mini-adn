@@ -7,106 +7,115 @@
         <div class="panel-content">
 
           <form [formGroup]="formData">
-            <h4>REPORTE DATOS Y GRÁFICOS PYG</h4>
             <div class="row">
-              <div class="col-xs-4">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <label class="labelInput">Nivel:</label>
-                    <mat-form-field>
-                      <mat-select placeholder="" formControlName="nivelList">
-                        <mat-option [value]="item.codigo" *ngFor="let item of nivelesList">{{item.nombre}}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </div>
+              <div class="col-lg-4">
+                <label class="labelInput">Nivel:</label>
+                <mat-form-field>
+                  <mat-select placeholder="" formControlName="nivelList">
+                    <mat-option [value]="item.codigo" *ngFor="let item of nivelesList">{{item.nombre}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
     
-              <div class="col-xs-4">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <label class="labelInput">Fecha Inicial Datos:*</label>
-                    <mat-form-field>
-                      <input formControlName="fechaCorteInicialTxt" matInput autocomplete="off" [matDatepicker]="picker"
-                        autofocus="" name="fechaCorteInicialTxt" pinputtext="" type="text" tabindex="0">
-                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                      <mat-datepicker #picker1 startView="year" [startAt]="fechaI"></mat-datepicker>
-                    </mat-form-field>
-                  </div>
-                </div>
+              <div class="col-lg-4">
+                <label class="labelInput">Fecha Inicial Datos:*</label>
+                <mat-form-field>
+                  <input formControlName="fechaCorteInicialTxt" matInput autocomplete="off" [matDatepicker]="picker"
+                    autofocus="" name="fechaCorteInicialTxt" pinputtext="" type="text" tabindex="0">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1 startView="year" [startAt]="fechaI"></mat-datepicker>
+                </mat-form-field>
               </div>
     
-              <div class="col-xs-4">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <label class="labelInput">Fecha Final Datos:*</label>
-                    <mat-form-field>
-                      <input formControlName="fechaCorteFinalTxt" matInput autocomplete="off" [matDatepicker]="picker2"
-                        autofocus="" name="fechaCorteFinalTxt" pinputtext="" type="text" tabindex="0">
-                      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                      <mat-datepicker #picker2 startView="year" [startAt]="startDate"></mat-datepicker>
-                    </mat-form-field>
-                  </div>
-                </div>
+              <div class="col-lg-4">
+                <label class="labelInput">Fecha Final Datos:*</label>
+                <mat-form-field>
+                  <input formControlName="fechaCorteFinalTxt" matInput autocomplete="off" [matDatepicker]="picker2"
+                    autofocus="" name="fechaCorteFinalTxt" pinputtext="" type="text" tabindex="0">
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2 startView="year" [startAt]="startDate"></mat-datepicker>
+                </mat-form-field>
               </div>
             </div>
     
             <div class="row">
     
-              <div class="col-xs-4">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <label class="labelInput">Expresar en:</label>
-                    <mat-form-field>
-                      <mat-select placeholder="" formControlName="valorExpresadoList">
-                        <mat-option [value]="">Seleccionar...</mat-option>
-                        <mat-option [value]="item.codigo" *ngFor="let item of valoresList">{{item.nombre}}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </div>
+              <div class="col-lg-4">
+                <label class="labelInput">Expresar en:</label>
+                <mat-form-field>
+                  <mat-select placeholder="" formControlName="valorExpresadoList">
+                    <mat-option [value]="">Seleccionar...</mat-option>
+                    <mat-option [value]="item.codigo" *ngFor="let item of valoresList">{{item.nombre}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
     
-              <div class="col-xs-4">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <label class="labelInput">Centro de costo*</label>
-                    <mat-form-field>
-                      <a matPrefix class="btn btn-xs btn-primary btn-autocompleted">
-                        <i class="glyphicon glyphicon-plus"></i>
-                      </a>
-                      <input type="text" name="centrosTxt" matInput formControlName="centroCostosList"
-                        [matAutocomplete]="autoCentros">
-                      <mat-autocomplete #autoCentros="matAutocomplete">
-                        <mat-option *ngFor="let option of filterCentrosInicial | async" [value]="option.codigo">
-                          {{option.nombre}}
-                        </mat-option>
-                      </mat-autocomplete>
-                      <span matSuffix class="glyphicon glyphicon-chevron-down">
-                      </span>
-                    </mat-form-field>
-                  </div>
-                </div>
+              <div class="col-lg-4">
+                <label class="labelInput">Centro de costo*</label>
+                <mat-form-field>
+                  <a matPrefix class="btn btn-xs btn-info btn-autocompleted">
+                    <i class="fa fa-plus"></i>
+                  </a>
+                  <input type="text" name="centrosTxt" matInput formControlName="centroCostosList"
+                    [matAutocomplete]="autoCentros">
+                  <mat-autocomplete #autoCentros="matAutocomplete">
+                    <mat-option *ngFor="let option of filterCentrosInicial | async" [value]="option.codigo">
+                      {{option.nombre}}
+                    </mat-option>
+                  </mat-autocomplete>
+                  <span matSuffix class="fa fa-chevron-down">
+                  </span>
+                </mat-form-field>
               </div>
     
-              <div class="col-xs-4">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <label class="labelInput">Filtro sobre Centro de costo</label>
-                    <mat-form-field>
-                      <input type="text" name="filtrocentrosTxt" matInput formControlName="filtrocentroCostoTxt">
-                    </mat-form-field>
-                  </div>
-                </div>
+              <div class="col-lg-4">
+                <label class="labelInput">Filtro sobre Centro de costo</label>
+                <mat-form-field>
+                  <input type="text" name="filtrocentrosTxt" matInput formControlName="filtrocentroCostoTxt">
+                </mat-form-field>
               </div>
     
             </div>
     
             <div class="row">
-              <div class="col-lg-12 pull-right">
-                  <button type="button" (click)="generar()" class="btn btn-accion pull-right">Generar</button>
+              <div class="col-lg-12">
+                <button type="button" [disabled]="formSubmit" (click)="generar()" class="btn btn-info pull-right"><i class="fa fa-check"></i> Generar</button>
               </div>
             </div>
+            
+            <br>
+            <div class="row" *ngIf="panelInfo === true">
+              <div class="col-lg-4">
+                <div echarts [options]="chartOption1" class="demo-chart"></div>
+              </div>
+              <div class="col-lg-4">
+                <div echarts [options]="chartOption2" class="demo-chart"></div>
+              </div>
+              <div class="col-lg-4">
+                <div echarts [options]="chartOption3" class="demo-chart"></div>
+              </div>
+            </div>
+            <br>
+
+            <div class="row" *ngIf="panelInfo === true">
+              <div class="col-lg-12">
+                <ngb-tabset>
+                  <ngb-tab title="Detalle perdidas y ganancias">
+                    <ng-template ngbTabContent>
+                        <br>
+                        <ng2-smart-table [settings]="settings" [source]="detalleGananciaPerdidas" class=""></ng2-smart-table>                    
+                    </ng-template>
+                  </ngb-tab>
+                  <ngb-tab title="Resumen perdidas y ganancias">
+                    <ng-template ngbTabContent>
+                        <br>
+                        <ng2-smart-table [settings]="settings" [source]="detalleGananciaPerdidas" class=""></ng2-smart-table>
+                    </ng-template>
+                  </ngb-tab>
+                </ngb-tabset>
+              </div>
+            </div>
+            
           </form>
 
         </div>

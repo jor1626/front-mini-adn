@@ -54,7 +54,6 @@ body {
     padding: 18px!important;
     border-radius: 3px  !important;
     margin-left: 11px  !important;
-    border-bottom: 5px solid #e2e6e9  !important;
 }
 
 .panel-content h4 {
@@ -78,10 +77,15 @@ body {
 }
 
 .btn-autocompleted {
+    color: white !important;
     margin-left: -23px !important;
     font-size: 7px !important;
     text-decoration: none !important;
     width: 17px !important;
+}
+
+.btn-autocompleted > i {
+    margin-left: -2px !important;
 }
 
 

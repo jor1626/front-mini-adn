@@ -7,6 +7,8 @@ import { AppState } from '../../app.reducers';
 import * as OthersModels  from '../../models';
 import * as OthersActions from '../../store/actions';
 import * as fromBalanceGeneral from './store/balance-general.actions';
+import { NotifierService } from 'angular-notifier';
+import { HelperService } from '../../helper/helper.service';
 
 @Component({
   selector: 'app-balance-general',
@@ -27,7 +29,8 @@ export class BalanceGeneralComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private helperService: HelperService
   ) {
     this.nivelesList = [];
     this.valoresList = [];
@@ -49,6 +52,16 @@ export class BalanceGeneralComponent implements OnInit {
 
 
     //Load state
+    this.store.select('balance_general').subscribe(data => {
+      console.log(data);
+      
+      if(data.loaded){
+        this.helperService.showNotification('info','Pdf Generado Correctamente!');
+      }
+      if(data.errors){
+        this.helperService.showNotification('error','No se puedo generar el pdf!');
+      }
+    });
     this.store.select('niveles').subscribe(state => this.nivelesList = state.niveles);
     this.store.select('valores').subscribe(state => this.valoresList = state.valores);
     this.store.select('centros').subscribe(state => {
@@ -64,6 +77,17 @@ export class BalanceGeneralComponent implements OnInit {
     const filterValue = data.toLowerCase();
 
     return this.centrosList.filter(option => option.nombre.toLowerCase().includes(filterValue));
+  }
+
+  async generar(){
+    
+    if(this.formData.invalid){
+      this.helperService.showNotification('error','Validar los campos requeridos!');
+      return
+    }
+
+    const data = this.formData.value;
+    await this.store.dispatch(new fromBalanceGeneral.BalanceGeneralAction(data));
   }
 
 }

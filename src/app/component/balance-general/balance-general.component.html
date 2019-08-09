@@ -8,69 +8,58 @@
           <form [formGroup]="formData">
             <h4>Parámetros Del Informe</h4>
             <div class="row">
-              <div class="col-xs-3">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <label class="labelInput">Nivel:*</label>
-                    <mat-form-field>
-                      <mat-select placeholder="" formControlName="nivelList">
-                        <mat-option [value]="item.codigo" *ngFor="let item of nivelesList">{{item.nombre}}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </div>
+              <div class="col-lg-3">
+                <label class="labelInput">Nivel:*</label>
+                <mat-form-field>
+                  <mat-select placeholder="" formControlName="nivelList">
+                    <mat-option [value]="item.codigo" *ngFor="let item of nivelesList">{{item.nombre}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
 
-              <div class="col-xs-3">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <label class="labelInput">Fecha de corte:</label>
-                    <mat-form-field>
-                      <input formControlName="fechaCorteTxt" matInput autocomplete="off" [matDatepicker]="picker"
-                        autofocus="" maxlength="19" name="fechaCorteTxt" type="text" tabindex="0">
-                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                      <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
-                    </mat-form-field>
-                  </div>
-                </div>
+              <div class="col-lg-3">
+                <label class="labelInput">Fecha de corte:</label>
+                <mat-form-field>
+                  <input formControlName="fechaCorteTxt" matInput autocomplete="off" [matDatepicker]="picker"
+                    autofocus="" maxlength="19" name="fechaCorteTxt" type="text" tabindex="0">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+                </mat-form-field>
               </div>
 
-              <div class="col-xs-3">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <label class="labelInput">Valores expresados en:</label>
-                    <mat-form-field>
-                      <mat-select placeholder="" formControlName="valorExpresadoList">
-                        <mat-option [value]="">Seleccionar...</mat-option>
-                        <mat-option [value]="item.codigo" *ngFor="let item of valoresList">{{item.nombre}}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </div>
+              <div class="col-lg-3">
+                <label class="labelInput">Valores expresados en:</label>
+                <mat-form-field>
+                  <mat-select placeholder="" formControlName="valorExpresadoList">
+                    <mat-option [value]="">Seleccionar...</mat-option>
+                    <mat-option [value]="item.codigo" *ngFor="let item of valoresList">{{item.nombre}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
 
-              <div class="col-xs-3">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <label class="labelInput">Centro de costo*</label>
-                    <mat-form-field>
-                      <a matPrefix class="btn btn-xs btn-primary btn-autocompleted">
-                        <i class="glyphicon glyphicon-plus"></i>
-                      </a>
-                      <input type="text" name="centrosTxt" matInput formControlName="centroCostosList"
-                        [matAutocomplete]="autoCentros">
-                      <mat-autocomplete #autoCentros="matAutocomplete">
-                        <mat-option *ngFor="let option of filterCentrosInicial | async" [value]="option.codigo">
-                          {{option.nombre}}
-                        </mat-option>
-                      </mat-autocomplete>
-                      <span matSuffix class="glyphicon glyphicon-chevron-down">
-                      </span>
-                    </mat-form-field>
-                  </div>
-                </div>
+              <div class="col-lg-3">
+                <label class="labelInput">Centro de costo*</label>
+                <mat-form-field>
+                  <a matPrefix class="btn btn-xs btn-info btn-autocompleted">
+                    <i class="fa fa-plus"></i>
+                  </a>
+                  <input type="text" name="centrosTxt" matInput formControlName="centroCostosList"
+                    [matAutocomplete]="autoCentros">
+                  <mat-autocomplete #autoCentros="matAutocomplete">
+                    <mat-option *ngFor="let option of filterCentrosInicial | async" [value]="option.codigo">
+                      {{option.nombre}}
+                    </mat-option>
+                  </mat-autocomplete>
+                  <span matSuffix class="fa fa-chevron-down">
+                  </span>
+                </mat-form-field>
               </div>
 
+            </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <button type="button" (click)="generar()" class="btn btn-info pull-right"><i class="fa fa-check"></i> Generar</button>
+              </div>
             </div>
           </form>
         </div>

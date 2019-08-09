@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { APP } from '../../../app.constants';
-import { BalanceGeneralClass } from '../model/balance-general.model';
+import { HttpClient } from '@angular/common/http';
+import { ExistenciaArticuloClass } from '../model/existencia-articulo.model';
 import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BalancGeneralService {
+export class ExistenciaArticuloService {
 
   apiEndpoint = APP.apiEndpoint;
 
@@ -15,13 +15,12 @@ export class BalancGeneralService {
     private http: HttpClient
   ) { }
 
-  reporte(data: BalanceGeneralClass){
-    var url = `${this.apiEndpoint}/balance-general`;
+  reporte(data: ExistenciaArticuloClass){
+    var url = `${this.apiEndpoint}/existencia-articulo`;
     return this.http.post(url, data).pipe(
-      map((data: BalanceGeneralClass) => {
+      map((data: any) => {
         return data
       })
     )
   }
-
 }

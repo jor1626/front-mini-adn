@@ -5,9 +5,10 @@ import { Observable, Subject } from 'rxjs';
 import { AppState } from '../../app.reducers';
 import { Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DataTableDirective } from 'angular-datatables';
-import { DataSpanidhDatatable } from '../../app.constants';
 import { startWith, map } from 'rxjs/operators';
+import * as fromEstadoResultados from './store/estado-resultado.actions';
+import { HelperService } from '../../helper/helper.service';
+import { LocalDataSource } from 'ng2-smart-table';
 
 @Component({
   selector: 'app-estado-resultado',
@@ -15,25 +16,25 @@ import { startWith, map } from 'rxjs/operators';
   styleUrls: ['./estado-resultado.component.css']
 })
 export class EstadoResultadoComponent implements OnInit {
-  @ViewChildren(DataTableDirective)
-  dtElement: DataTableDirective;
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
-  dtInstance: DataTables.Api;
+  source: LocalDataSource;
+  settings: any;
 
   formData: FormGroup;
   nivelesList: OthersModels.NivelClass[];
   valoresList: OthersModels.ValorClass[];
   centrosList: OthersModels.CentroClass[];
-  perdidasGananciasList: any[];
-  public now = new Date();
-  fechaI = new Date(this.now.getFullYear(), this.now.getMonth(), this.now.getDate());
-  fechaF = new Date(this.now.getFullYear(), this.now.getMonth(), this.now.getDate() + 30);
+  detalleGananciaPerdidas: any[];
+  resumenGananciaPerdidas: any[];
   chartOption1: any;
   chartOption2: any;
   chartOption3: any;
-  detalle: boolean;
-  resumen: boolean;
+  panelInfo: boolean;
+  panelDetalle: boolean;
+  panelResumen: boolean;
+  formSubmit: boolean;
+  now = new Date();
+  fechaIni = new Date(this.now.getFullYear(), this.now.getMonth(), this.now.getDate());
+  fechaFin = new Date(this.now.getFullYear(), this.now.getMonth(), this.now.getDate() + 30);
 
   //AutoComplete material
 
@@ -42,12 +43,14 @@ export class EstadoResultadoComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private fb: FormBuilder,
-    private chRef: ChangeDetectorRef
+    private chRef: ChangeDetectorRef,
+    private helperService: HelperService
   ) {
     this.nivelesList = [];
     this.valoresList = [];
     this.centrosList = [];
-    this.perdidasGananciasList = [];
+    this.detalleGananciaPerdidas = [];
+    this.resumenGananciaPerdidas = [];
 
     this.chartOption1 = {
       title: {
@@ -84,7 +87,7 @@ export class EstadoResultadoComponent implements OnInit {
 
     this.chartOption2 = {
       title: {
-        text: 'Control de gastos',
+        text: 'Control de costos',
       },
       tooltip: {
           trigger: 'axis',
@@ -164,24 +167,43 @@ export class EstadoResultadoComponent implements OnInit {
       ]
     };
 
-    this.detalle = true;
-    this.resumen = false;
+    this.settings = {
+      actions: false,
+      columns: {
+        cod_cuenta: {
+          title: 'Codigo',
+          filter: false
+        },
+        nom_cuenta: {
+          title: 'Nombre de la cuenta',
+          filter: false
+        },
+        saldo: {
+          title: 'Saldo',
+          filter: false
+        }
+      },
+      attr: {
+        class: 'table table-bordered table-condensed table-striped compact no-footer'
+      }
+    };
+
+    this.panelInfo = false;
+    this.panelDetalle = true;
+    this.panelResumen = false;
+    this.formSubmit = false;
 
   }
 
   ngOnInit() {
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      language: DataSpanidhDatatable
-    };
 
     //Form Reactive Data Atribbutes
     this.formData = this.fb.group({
-      nivelList: ['', Validators.required],
-      fechaCorteInicialTxt: [this.fechaI, Validators.required], 
-      fechaCorteFinalTxt: [this.fechaF, Validators.required],
-      valorExpresadoList: ['', Validators.required],
-      centroCostosList: ['', Validators.required],
+      nivelList: [''],
+      fechaCorteInicialTxt: ['', Validators.required], 
+      fechaCorteFinalTxt: ['', Validators.required],
+      valorExpresadoList: [''],
+      centroCostosList: [''],
       filtrocentroCostoTxt: [''],
       userGenerator: ['JORDAN OROZCO R']
     });
@@ -190,9 +212,23 @@ export class EstadoResultadoComponent implements OnInit {
     this.store.dispatch(new OthersActions.listarNivelesAction());
     this.store.dispatch(new OthersActions.listarValoresAction());
     this.store.dispatch(new OthersActions.ListarCentrosActions());
-    // this.store.dispatch(new fromPerdidasGanancias.PerdidasGananciasAction());
 
     //Load state
+    this.store.select('estado_resultado').subscribe(state => {
+      this.formData.get('fechaCorteInicialTxt').setValue(this.fechaIni);
+      this.formData.get('fechaCorteFinalTxt').setValue(this.fechaFin);
+      if(state.loaded){
+        this.panelInfo = true;
+        this.detalleGananciaPerdidas = state.data.informe.reporte;
+        this.source = new LocalDataSource(state.data.informe.reporte);
+        this.helperService.showNotification('success','Reporte generado correctamente!');
+      }
+
+      if(state.errors){
+        this.panelInfo = false;
+        this.helperService.showNotification('error','El reporte no se genero correctamente!');
+      }
+    });
     this.store.select('niveles').subscribe(state => this.nivelesList = state.niveles);
     this.store.select('valores').subscribe(state => this.valoresList = state.valores);
     this.store.select('centros').subscribe(state => {
@@ -202,27 +238,13 @@ export class EstadoResultadoComponent implements OnInit {
         map(value => this._filtroCentro(value))
       );
     });
-    this.store.select('perdidasGanancias').subscribe(state => this.perdidasGananciasList = state.data);
-    this.rerender();
-    
   }
 
   ngAfterViewInit(): void {
-    this.dtTrigger.next();
     this.chRef.detectChanges();
   }
 
   ngOnDestroy(): void {
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
   }
 
   _filtroCentro(data: string): OthersModels.CentroClass[] {
@@ -231,20 +253,31 @@ export class EstadoResultadoComponent implements OnInit {
     return this.centrosList.filter(option => option.nombre.toLowerCase().includes(filterValue));
   }
 
-  generar(){
-    // const data    = this.formData.value;
-    // const action  = new fromReports.GenerarReporteAction(data);
-    // this.store.dispatch(action);
+  async generar(){
+    this.formSubmit = true;
+    if(this.formData.invalid){
+      this.helperService.showNotification('error','Validar los campos requeridos!');
+      this.formSubmit = false;
+      return
+    }
+    const data    = this.formData.value;
+    const action  = new fromEstadoResultados.EstadoResultadoAction(data);
+    await this.store.dispatch(action);
+    this.formSubmit = false;
+  }
+
+  visiblePanelInfo(){
+
   }
 
   visiblePanel1(){
-    this.detalle = true;
-    this.resumen = false;
+    this.panelDetalle = true;
+    this.panelResumen = false;
   }
 
   visiblePanel2(){
-    this.detalle = false;
-    this.resumen = true;
+    this.panelDetalle = false;
+    this.panelResumen = true;
   }
 
 }

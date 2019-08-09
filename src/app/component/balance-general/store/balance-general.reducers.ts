@@ -26,8 +26,8 @@ export function BalanceGeneralReducer(state = initialState, action: fromBalanceG
         case fromBalanceGeneral.GENERAR_REPORTE_SUCCESS:
             return {
                 ...state,
-                loaded: false,
-                loading: true,
+                loaded: true,
+                loading: false,
                 data: action.data
             }
     

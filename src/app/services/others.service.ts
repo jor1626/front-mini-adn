@@ -66,4 +66,13 @@ export class OthersService {
     );
   }
 
+  getTipos(){
+    var url = `${this.url}/tipos`;
+    return this.http.get(url).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
+
 }

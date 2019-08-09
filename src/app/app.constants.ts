@@ -23,7 +23,7 @@ export let DataSpanidhDatatable: DataTables.LanguageSettings = {
     lengthMenu: 'Mostrar _MENU_ registros',
     loadingRecords: 'Cargando...',
     processing: 'Procesando...',
-    search: '<button type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-search"></i></button>',
+    search: '<button type="button" class="btn btn-sm btn-info"><i class="fa fa-search"></i></button>',
     searchPlaceholder: 'Buscar registros...',
     zeroRecords: 'No se encontraron resultados',
     aria: {

@@ -18,6 +18,8 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DataTablesModule } from 'angular-datatables';
+import { NgxEchartsModule } from 'ngx-echarts';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 import { MatButtonToggleModule, 
   MatButtonModule, 
@@ -29,6 +31,7 @@ import { MatButtonToggleModule,
   MatSelectModule, 
   MatIconModule 
 } from '@angular/material';
+import { NotifierModule } from 'angular-notifier';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -54,7 +57,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    DataTablesModule
+    DataTablesModule,
+    NotifierModule,
+    NgxEchartsModule,
+    Ng2SmartTableModule
   ],
   declarations: [
     SpinnerComponent, BreadcrumbComponent, NavigationComponent, SidebarComponent, FullComponent, BlankComponent
@@ -75,7 +81,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
-    DataTablesModule
+    DataTablesModule,
+    NotifierModule,
+    NgxEchartsModule,
+    Ng2SmartTableModule
   ],
   providers: [
     {
